@@ -13,7 +13,8 @@ DeepracticeBrands/
 │   ├── nuwa-*.jpg   # PromptX-Nuwa 产品 Logo
 │   ├── luban-*.png  # PromptX-Luban 产品 Logo
 │   ├── docs-*.png   # Docs 文档中心 Logo
-│   └── podcast-*.png # 播客频道 Logo
+│   ├── podcast-*.png # 播客频道 Logo
+│   └── bilibili-*.png # B站频道 Logo
 └── index.html       # 图片预览页面
 ```
 
@@ -47,6 +48,11 @@ DeepracticeBrands/
 ### 播客频道标识
 
 - **podcast-cover.png** - 小宇宙播客频道封面
+
+### B站频道标识
+
+- **bilibili-v0.png** - B站频道标识 v0版本
+- **bilibili-v1.png** - B站频道标识 v1版本
 
 ## 📝 管理规范
 
