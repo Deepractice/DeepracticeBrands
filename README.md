@@ -69,6 +69,7 @@ DeepracticeBrands/
 
 本仓库已配置 Cloudflare Pages 自动部署：
 
+- **在线地址**：https://brands.deepractice.ai
 - **预览地址**：通过 index.html 查看所有品牌资源
 - **更新流程**：推送到 main 分支后自动部署
 
