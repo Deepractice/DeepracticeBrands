@@ -9,7 +9,8 @@ DeepracticeBrands/
 ├── images/          # 品牌图片资源
 │   ├── logo-*.png   # 公司 Logo 各种配色版本
 │   ├── duck-*.png   # PromptX 鸭子吉祥物
-│   └── PromptX-*.png # PromptX 产品 Logo
+│   ├── PromptX-*.png # PromptX 产品 Logo
+│   └── docs-*.png   # Docs 文档中心 Logo
 └── index.html       # 图片预览页面
 ```
 
@@ -30,6 +31,13 @@ DeepracticeBrands/
 - **duck-transparent.png** - 鸭子吉祥物透明背景
 - **duck-white.png** - 鸭子吉祥物白色背景
 - **duck-reverse.png** - 鸭子吉祥物反色版本
+
+### Docs 文档中心标识
+
+- **docs-black.png** - 黑色版本，适用于浅色背景
+- **docs-white.png** - 白色版本，适用于深色背景  
+- **docs-dark.png** - 深色版本，中性色调
+- **docs-transparent.png** - 透明背景版本
 
 ## 📝 管理规范
 
