@@ -84,6 +84,105 @@
         .image-size {
             font-size: 0.9rem;
             color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .image-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .btn-copy {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-copy:hover {
+            background: #5567d8;
+            transform: translateY(-1px);
+        }
+        
+        .btn-preview {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-preview:hover {
+            background: #38a169;
+            transform: translateY(-1px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .copied {
+            background: #38a169 !important;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            cursor: zoom-out;
+        }
+        
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.3s ease;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .modal-close:hover {
+            color: #ff6b6b;
+        }
+        
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
         
         .loading {
@@ -129,6 +228,11 @@
     <div class="build-info">
         Last build: <span id="buildTime"></span>
     </div>
+    
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
 
     <script>
         const imageFiles = /* IMAGE_FILES_PLACEHOLDER */;
@@ -139,6 +243,29 @@
             const sizes = ['Bytes', 'KB', 'MB'];
             const i = Math.floor(Math.log(bytes) / Math.log(k));
             return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+        
+        function copyToClipboard(text, buttonElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = buttonElement.innerHTML;
+                buttonElement.classList.add('copied');
+                buttonElement.innerHTML = '✓ 已复制';
+                
+                setTimeout(() => {
+                    buttonElement.classList.remove('copied');
+                    buttonElement.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('复制失败，请手动复制');
+            });
+        }
+        
+        function showPreview(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.add('show');
+            modalImg.src = imageSrc;
         }
 
         function displayImages() {
@@ -153,7 +280,8 @@
                 imageContainer.className = 'image-container';
                 
                 const img = document.createElement('img');
-                img.src = `images/${filename}`;
+                const imagePath = `images/${filename}`;
+                img.src = imagePath;
                 img.alt = filename;
                 img.loading = 'lazy';
                 
@@ -167,6 +295,24 @@
                 const size = document.createElement('div');
                 size.className = 'image-size';
                 
+                const actions = document.createElement('div');
+                actions.className = 'image-actions';
+                
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'btn btn-copy';
+                copyBtn.innerHTML = '📋 复制路径';
+                copyBtn.onclick = function() {
+                    const fullPath = window.location.origin + window.location.pathname.replace('index.html', '') + imagePath;
+                    copyToClipboard(fullPath, this);
+                };
+                
+                const previewBtn = document.createElement('button');
+                previewBtn.className = 'btn btn-preview';
+                previewBtn.innerHTML = '👁 预览';
+                previewBtn.onclick = function() {
+                    showPreview(imagePath);
+                };
+                
                 img.onload = function() {
                     size.textContent = `${this.naturalWidth} × ${this.naturalHeight}px`;
                 };
@@ -175,9 +321,13 @@
                     imageContainer.innerHTML = '<div style="color: #999; padding: 20px;">Failed to load image</div>';
                 };
                 
+                actions.appendChild(copyBtn);
+                actions.appendChild(previewBtn);
+                
                 imageContainer.appendChild(img);
                 info.appendChild(name);
                 info.appendChild(size);
+                info.appendChild(actions);
                 card.appendChild(imageContainer);
                 card.appendChild(info);
                 gallery.appendChild(card);
@@ -199,6 +349,26 @@
         document.addEventListener('DOMContentLoaded', () => {
             displayImages();
             displayBuildTime();
+            
+            // Modal close handlers
+            const modal = document.getElementById('imageModal');
+            const modalClose = document.querySelector('.modal-close');
+            
+            modalClose.onclick = function() {
+                modal.classList.remove('show');
+            };
+            
+            modal.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.classList.remove('show');
+                }
+            };
+            
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.classList.contains('show')) {
+                    modal.classList.remove('show');
+                }
+            });
         });
     </script>
 </body>
