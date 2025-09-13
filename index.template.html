@@ -103,6 +103,13 @@
             margin: 40px auto;
         }
         
+        .build-info {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -119,21 +126,12 @@
     <div id="gallery" class="gallery">
         <div class="loading">Loading images...</div>
     </div>
+    <div class="build-info">
+        Last build: <span id="buildTime"></span>
+    </div>
 
     <script>
-        const imageFiles = [
-            'PromptX-transparent.png',
-            'PromptX-white.png',
-            'duck-reverse.png',
-            'duck-transparent.png',
-            'duck-white.png',
-            'logo-black.png',
-            'logo-gray.png',
-            'logo-lightbule.png',
-            'logo-midblue.png',
-            'logo-white.png',
-            'origin.jpg'
-        ];
+        const imageFiles = /* IMAGE_FILES_PLACEHOLDER */;
 
         function formatFileSize(bytes) {
             if (bytes === 0) return '0 Bytes';
@@ -185,8 +183,23 @@
                 gallery.appendChild(card);
             });
         }
+        
+        function displayBuildTime() {
+            const buildTime = new Date().toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('buildTime').textContent = buildTime;
+        }
 
-        document.addEventListener('DOMContentLoaded', displayImages);
+        document.addEventListener('DOMContentLoaded', () => {
+            displayImages();
+            displayBuildTime();
+        });
     </script>
 </body>
 </html>
